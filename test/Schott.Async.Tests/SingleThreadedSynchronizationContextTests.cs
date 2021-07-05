@@ -82,14 +82,16 @@ namespace Schott.Async.Tests
     [Fact]
     public void RunAsync_NewThread()
     {
+#pragma warning disable 618
       var thread = new Thread(TestRunAsync().GetAwaiter().GetResult) { IsBackground = true, ApartmentState = ApartmentState.STA };
+#pragma warning restore 618
       thread.Start();
       thread.Join();
     }
 
     private static async Task TestRunAsync()
     {
-      using var _ = SynchronizationContextRegion.None;
+      using var _ = SynchronizationContextRegion.None();
 
       var currentThread = Environment.CurrentManagedThreadId;
 

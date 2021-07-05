@@ -78,8 +78,13 @@ using (new SynchronizationContextRegion(new DispatcherSynchronizationContext()))
 
 // this code runs on the original synchronization context again
 ```
+or
+```csharp
+await new SynchronizationContextRegion(new DispatcherSynchronizationContext());
+// this code runs with the provided synchronization context
+```
 
-### Disabling synchronization context with `SynchronizationContextRegion.None`
+### Disabling synchronization context with `SynchronizationContextRegion.None()`
 It's common that asynchronous library methods often configure task continuations with `.ConfigureAwait(false)` to avoid switching back to the orginal synchronization context.
 
 In WinForms or WPF applications this avoids that continuations are executed on the UI thread.
@@ -92,11 +97,20 @@ After leaving its scope the original synchronization context is restored.
 ```csharp
 public async Task MethodAsync()
 {
-  using (SynchronizationContextRegion.None)
+  using (SynchronizationContextRegion.None())
   {
     await DoSomething1Async();
     await DoSomething1Asyn2();
   }
+}
+```
+or
+```csharp
+public async Task MethodAsync()
+{
+  await SynchronizationContextRegion.None();
+  await DoSomething1Async();
+  await DoSomething1Asyn2();
 }
 ```
 
