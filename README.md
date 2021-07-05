@@ -67,7 +67,7 @@ thread.Start();
 thread.Join();
 ```
 
-## `SynchronizationContextRegion`
+## `SynchronizationContextRegion` / `AwaitableSynchronizationContextRegion`
 - Wraps [SynchronizationContext.SetSynchronizationContext](https://docs.microsoft.com/dotnet/api/system.threading.synchronizationcontext.setsynchronizationcontext) as IDisposable
 
 ```csharp
@@ -80,7 +80,7 @@ using (new SynchronizationContextRegion(new DispatcherSynchronizationContext()))
 ```
 or
 ```csharp
-await new SynchronizationContextRegion(new DispatcherSynchronizationContext());
+await new AwaitableSynchronizationContextRegion(new DispatcherSynchronizationContext());
 // this code runs with the provided synchronization context
 ```
 
@@ -108,7 +108,7 @@ or
 ```csharp
 public async Task MethodAsync()
 {
-  await SynchronizationContextRegion.None();
+  await AwaitableSynchronizationContextRegion.None();
   await DoSomething1Async();
   await DoSomething1Asyn2();
 }

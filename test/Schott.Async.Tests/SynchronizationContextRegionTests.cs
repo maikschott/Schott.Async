@@ -1,5 +1,4 @@
 using System.Threading;
-using System.Threading.Tasks;
 using Xunit;
 
 namespace Schott.Async.Tests
@@ -9,7 +8,7 @@ namespace Schott.Async.Tests
     [Fact]
     public void Ctor_ChangesSynchronizationContext()
     {
-      var oldContext = SynchronizationContext.Current;
+      var oldContext = SynchronizationContext.Current; // XUnit SynchronizationContext
 
       using var context = new SingleThreadedSynchronizationContext();
       using (new SynchronizationContextRegion(context))
@@ -31,23 +30,6 @@ namespace Schott.Async.Tests
       }
 
       Assert.Same(oldContext, SynchronizationContext.Current);
-    }
-
-    [Fact]
-    public async Task Await_ChangesSynchronizationContext()
-    {
-      var oldContext = SynchronizationContext.Current;
-
-      using var context = new SingleThreadedSynchronizationContext();
-      await AwaitSynchronizationContextRegion(context);
-
-      Assert.Same(oldContext, SynchronizationContext.Current);
-    }
-
-    private static async Task AwaitSynchronizationContextRegion(SingleThreadedSynchronizationContext context)
-    {
-      await new SynchronizationContextRegion(context);
-      Assert.Same(context, SynchronizationContext.Current);
     }
   }
 }
