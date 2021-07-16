@@ -7,7 +7,7 @@ namespace Schott.Async
     /// <summary>
     /// Cached task returning <see langword="false"/>.
     /// </summary>
-    public static readonly Task<bool> False = Task.FromResult(false);
+    public static readonly Task<bool> False = TaskResult<bool>.Default;
 
     /// <summary>
     /// Cached task returning <see langword="true"/>.

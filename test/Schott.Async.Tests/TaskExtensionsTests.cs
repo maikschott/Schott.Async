@@ -297,6 +297,34 @@ namespace Schott.Async.Tests
       await Assert.ThrowsAsync<TimeoutException>(() => new TaskCompletionSource<bool>().Task.WithTimeout(TimeSpan.FromSeconds(0.1)));
     }
 
+    [Fact]
+    public void SaferWait()
+    {
+      var currentThread = Environment.CurrentManagedThreadId;
+      int taskThread = 0;
+
+      var task = Task.Delay(100).ContinueWith(_ => taskThread = Environment.CurrentManagedThreadId, TaskContinuationOptions.ExecuteSynchronously);
+      task.SaferWait();
+
+      Assert.NotEqual(currentThread, taskThread);
+    }
+
+    [Fact]
+    public void SaferResult()
+    {
+      var currentThread = Environment.CurrentManagedThreadId;
+      int taskThread = 0;
+
+      var result = Task.Delay(100).ContinueWith(_ =>
+      {
+        taskThread = Environment.CurrentManagedThreadId;
+        return 1;
+      }, TaskContinuationOptions.ExecuteSynchronously).SaferResult();
+
+      Assert.Equal(1, result);
+      Assert.NotEqual(currentThread, taskThread);
+    }
+
     void IDisposable.Dispose() => manualResetEvent.Dispose();
   }
 }

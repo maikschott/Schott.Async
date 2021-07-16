@@ -43,9 +43,6 @@ namespace Schott.Async
     /// <summary>
     /// Releases the resources used by this <see cref="PauseTokenSource" />.
     /// </summary>
-    public void Dispose()
-    {
-      manualResetEvent.Dispose();
-    }
+    public void Dispose() => manualResetEvent.Dispose();
   }
 }

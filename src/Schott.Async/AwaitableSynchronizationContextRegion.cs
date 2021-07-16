@@ -33,8 +33,6 @@ namespace Schott.Async
       }
     }
 
-    public void GetResult()
-    {
-    }
+    public void GetResult() { }
   }
 }

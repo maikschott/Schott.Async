@@ -42,21 +42,13 @@ namespace Schott.Async
     /// or the <paramref name="cancellationToken"/> is set to the cancelled state.
     /// </summary>
     /// <param name="cancellationToken">The optional cancellation token</param>
-    public void WaitWhilePaused(CancellationToken cancellationToken = default)
-    {
-      manualResetEvent?.Wait(cancellationToken);
-    }
+    public void WaitWhilePaused(CancellationToken cancellationToken = default) => manualResetEvent?.Wait(cancellationToken);
 
     /// <summary>
     /// Asynchronously waits until <see cref="IsPauseRequested"/> transitions into the non-paused state,
     /// or the <paramref name="cancellationToken"/> is set to the cancelled state.
     /// </summary>
     /// <param name="cancellationToken">The optional cancellation token</param>
-    public Task WaitWhilePausedAsync(CancellationToken cancellationToken = default)
-    {
-      if (manualResetEvent is null) { return Task.CompletedTask; }
-
-      return manualResetEvent.WaitHandle.ToTask(cancellationToken: cancellationToken);
-    }
+    public Task WaitWhilePausedAsync(CancellationToken cancellationToken = default) => manualResetEvent?.WaitHandle.ToTask(cancellationToken: cancellationToken) ?? Task.CompletedTask;
   }
 }

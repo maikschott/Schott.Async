@@ -26,7 +26,7 @@ namespace Schott.Async
         }
         catch
         {
-          // Exceptions ignorieren
+          // Ignore exception
         }
       }
     }
@@ -201,6 +201,28 @@ namespace Schott.Async
       cts.Cancel();
 
       return await task.ConfigureAwait(false);
+    }
+
+    /// <summary>
+    /// Safer way to await a task synchronously.
+    /// The task is wrapped in another thread-bound task do avoid synchronization context deadlocks,
+    /// and awaited using <see cref="Task.GetAwaiter"/> so that in case of an exception it doesn't get wrapped in an <see cref="AggregateException"/>.
+    /// </summary>
+    /// <param name="task">The task to await synchronously</param>
+    public static void SaferWait(this Task task)
+    {
+      Task.Run(() => task).GetAwaiter().GetResult();
+    }
+
+    /// <summary>
+    /// Safer way to await a task synchronously.
+    /// The task is wrapped in another thread-bound task do avoid synchronization context deadlocks,
+    /// and awaited using <see cref="Task.GetAwaiter"/> so that in case of an exception it doesn't get wrapped in an <see cref="AggregateException"/>.
+    /// </summary>
+    /// <param name="task">The task to await synchronously</param>
+    public static T SaferResult<T>(this Task<T> task)
+    {
+      return Task.Run(() => task).GetAwaiter().GetResult();
     }
   }
 }
