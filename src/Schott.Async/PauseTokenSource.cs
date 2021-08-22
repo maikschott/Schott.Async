@@ -3,7 +3,7 @@ using System.Threading;
 
 namespace Schott.Async
 {
-  // Based on https://devblogs.microsoft.com/pfxteam/cooperatively-pausing-async-methods/, but implemented using a ManualResetEventSlim.
+  // Based on Stephen Toub: "Cooperatively pausing async methods" https://devblogs.microsoft.com/pfxteam/cooperatively-pausing-async-methods/, but implemented using a ManualResetEventSlim.
   /// <summary>
   /// Signals to a <see cref="PauseToken"/> that it should be paused / unpaused.
   /// </summary>

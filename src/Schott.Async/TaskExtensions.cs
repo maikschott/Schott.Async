@@ -6,7 +6,7 @@ namespace Schott.Async
 {
   public static class TaskExtensions
   {
-    // https://www.meziantou.net/fire-and-forget-a-task-in-dotnet.htm
+    // Based on Gérald Barré: "Fire and forget a Task in .NET" https://www.meziantou.net/fire-and-forget-a-task-in-dotnet.htm
     /// <summary>
     /// Forget about a fired task, i.e. in cases where awaiting a task isn't needed.
     /// </summary>

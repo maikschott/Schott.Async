@@ -4,6 +4,7 @@ A library providing additional task-based APIs.
 ## `PauseTokenSource` / `PauseToken`
 - Allows pausing and resuming methods
 - Usage is similar to [CancellationTokenSource](https://docs.microsoft.com/dotnet/api/system.threading.cancellationtokensource) / [CancellationToken](https://docs.microsoft.com/dotnet/api/system.threading.cancellationtoken)
+- Based on Stephen Toub: _[Cooperatively pausing async methods](https://devblogs.microsoft.com/pfxteam/cooperatively-pausing-async-methods/)_, but implemented using a ManualResetEventSlim
 
 The following example will print the current time in a task, but will pause and unpause when a key is pressed.
 ```csharp
@@ -120,3 +121,33 @@ Extension methods:
 - `public Task<bool> ToTask(this WaitHandle waitHandle, TimeSpan? timeout = null, CancellationToken cancellationToken = default)`: convert a WaitHandle to a task,
 - `public static Task WithCancellation(this Task task, CancellationToken cancellationToken)`: wrap a task not supporting cancellation inside a cancellable task,
 - `public static async Task WithTimeout(this Task task, TimeSpan timeout)`: throw a [TimeOutException](https://docs.microsoft.com/dotnet/api/system.timeoutexception) if a task exceeds a provided timeout.
+
+## `ParallelAsync`
+- Allows parallel execution of task-based iterations
+- Usage is similar to [Parallel.For](https://docs.microsoft.com/dotnet/api/system.threading.tasks.parallel.for) / [Parallel.ForEach](https://docs.microsoft.com/dotnet/api/system.threading.tasks.parallel.foreach) but supports async delegates
+- Based on Stephen Toub: _[Implementing a simple ForEachAsync, part 2](https://devblogs.microsoft.com/pfxteam/implementing-a-simple-foreachasync-part-2/)_
+
+```csharp
+await ParallelAsync.ForAsync(0, 10, async index =>
+{
+  await DoSomethingAsync(index);
+});
+```
+or
+```csharp
+await ParallelAsync.ForEachAsync(enumerable, async item =>
+{
+  await DoSomethingAsync(item);
+});
+```
+
+- Maximum amount of parallel running iterations can be specified
+- Cancellation token support
+- TaskScheduler can be specified
+```csharp
+var parallelOptions = new ParallelOptions { MaxDegreeOfParallelism = 4, CancellationToken = cancellationToken };
+await ParallelAsync.ForAsync(0, 10, parallelOptions, async index =>
+{
+  await DoSomethingAsync(index);
+});
+```

@@ -124,7 +124,7 @@ namespace Schott.Async.Tests
     [Fact]
     public async Task WithCancellation_NonGeneric_Null()
     {
-      await Assert.ThrowsAsync<ArgumentNullException>(() => ((Task)null)!.WithCancellation(CancellationToken.None));
+      await Assert.ThrowsAsync<ArgumentNullException>("task", () => ((Task)null)!.WithCancellation(CancellationToken.None));
     }
 
     [Fact]
@@ -193,7 +193,7 @@ namespace Schott.Async.Tests
     [Fact]
     public async Task WithCancellation_Generic_Null()
     {
-      await Assert.ThrowsAsync<ArgumentNullException>(() => ((Task<bool>)null)!.WithCancellation(CancellationToken.None));
+      await Assert.ThrowsAsync<ArgumentNullException>("task", () => ((Task<bool>)null)!.WithCancellation(CancellationToken.None));
     }
 
     [Fact]
@@ -264,7 +264,7 @@ namespace Schott.Async.Tests
     [Fact]
     public async Task WithTimeout_NonGeneric_Null()
     {
-      await Assert.ThrowsAsync<ArgumentNullException>(() => ((Task)null)!.WithTimeout(TimeSpan.FromSeconds(1)));
+      await Assert.ThrowsAsync<ArgumentNullException>("task", () => ((Task)null)!.WithTimeout(TimeSpan.FromSeconds(1)));
     }
 
     [Fact]
@@ -282,7 +282,7 @@ namespace Schott.Async.Tests
     [Fact]
     public async Task WithTimeout_Generic_Null()
     {
-      await Assert.ThrowsAsync<ArgumentNullException>(() => ((Task<bool>)null)!.WithTimeout(TimeSpan.FromSeconds(1)));
+      await Assert.ThrowsAsync<ArgumentNullException>("task", () => ((Task<bool>)null)!.WithTimeout(TimeSpan.FromSeconds(1)));
     }
 
     [Fact]
